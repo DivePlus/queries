@@ -20,13 +20,13 @@ WHERE {
   ?eventID     rdfs:label          ?label     .
   ?eventID     dcterms:description ?text      .
   OPTIONAL {
-      ?eventID sem:hasActor ?actor
+    ?eventID sem:hasActor ?actor
   }
   OPTIONAL {
     ?annotationID oa:hasTarget ?eventID      .
     ?annotationID dive:adds    ?enrichmentID .
     ?enrichmentID sem:hasActor ?actor
   }
-  ?mediaObj    dive:inCollection   ?_collection .
+  ?mediaObj    dive:inCollection   ?_collection
   FILTER (!BOUND(?actor))
 } LIMIT 30
