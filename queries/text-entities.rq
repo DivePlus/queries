@@ -1,0 +1,31 @@
+#+ summary: List events which have a description text associated with them, but
+#           no entities have been identified in these events.
+#+ endpoint: http://data.dive.beeldengeluid.nl/sparql/
+#+ idField: eventID
+#+ parameters: collection
+#+ tags:
+#+      - Dive-Dashboard
+
+PREFIX sem: <http://semanticweb.cs.vu.nl/2009/11/sem/>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX dcterms: <http://purl.org/dc/terms/>
+PREFIX oa: <http://www.w3.org/ns/oa#>
+PREFIX prov: <http://www.w3.org/ns/prov#>
+
+SELECT ?label ?eventID ?text
+WHERE {
+  ?eventID     rdf:type            sem:Event  .
+  ?eventID     dive:depictedBy     ?mediaObj  .
+  ?eventID     rdfs:label          ?label     .
+  ?eventID     dcterms:description ?text      .
+  OPTIONAL {
+      ?eventID sem:hasActor ?actor
+  }
+  OPTIONAL {
+    ?annotationID oa:hasTarget ?eventID      .
+    ?annotationID dive:adds    ?enrichmentID .
+    ?enrichmentID sem:hasActor ?actor
+  }
+  ?mediaObj    dive:inCollection   ___collection___ .
+  FILTER (!BOUND(?actor))
+} LIMIT 30

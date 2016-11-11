@@ -1,0 +1,25 @@
+#+ summary: List events without both actors and places
+#+ endpoint: http://data.dive.beeldengeluid.nl/sparql/
+#+ idField: item
+#+ tags:
+#+      - Dive-Dashboard (unused)
+
+PREFIX sem: <http://semanticweb.cs.vu.nl/2009/11/sem/>
+
+SELECT ?event ?mo ?title ?actor ?actorName ?place ?placeName WHERE
+{
+    ?event a sem:Event .
+    ?event dive:depictedBy ?mo .
+    ?mo dive:inCollection <%s> .
+    ?hasTitle rdfs:subClassOf* rdfs:label .
+      ?mo ?hasTitle ?title .
+    OPTIONAL {
+        ?event sem:hasPlace ?place . ?place rdfs:label ?placeName
+    }
+    OPTIONAL {
+        ?event sem:hasActor ?actor . ?actor rdfs:label ?actorName
+    }
+    FILTER NOT EXISTS {
+        ?event sem:hasPlace ?place ; sem:hasActor ?actor
+    }
+}

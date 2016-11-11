@@ -1,0 +1,18 @@
+#+ summary: List media objects with no source	
+#+ endpoint: http://data.dive.beeldengeluid.nl/sparql/
+#+ idField: item
+#+ tags:
+#+      - Dive-Dashboard (unused)
+
+PREFIX am: <http://vocab.deri.ie/am#>
+PREFIX edm: <http://www.europeana.eu/schemas/edm/>
+
+SELECT ?item  WHERE {
+    ?item dive:inCollection <___collection___> .
+    ?item a ?type .
+    ?type rdfs:subClassOf* dive:MediaObject .
+    ?item am:title ?title .
+    OPTIONAL {?item dive:source ?src}
+    OPTIONAL {?item edm:object ?src2}
+    FILTER (!bound(?src) && !bound(?src2))
+}

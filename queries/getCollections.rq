@@ -1,0 +1,13 @@
+#+ summary: List all collections on DIVE repository
+#+ endpoint: http://data.dive.beeldengeluid.nl/sparql/
+#+ idField: uri
+#+ tags:
+#+      - Dive-Dashboard
+
+PREFIX dive: <http://purl.org/collections/nl/dive/>
+
+SELECT DISTINCT ?uri ?label
+WHERE {
+  ?uri a dive:Collection .
+  ?uri rdfs:label ?label
+} LIMIT 30

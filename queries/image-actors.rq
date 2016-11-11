@@ -1,0 +1,20 @@
+#+ summary: List events which have an imageURL associated with them, but not
+#           yet an actor
+#+ endpoint: http://data.dive.beeldengeluid.nl/sparql/
+#+ idField: eventID
+#+ parameters: collection
+#+ tags:
+#+      - Dive-Dashboard
+
+PREFIX sem: <http://semanticweb.cs.vu.nl/2009/11/sem/>
+PREFIX dive: <http://purl.org/collections/nl/dive/>
+PREFIX dcterms: <http://purl.org/dc/terms/>
+
+SELECT ?label ?imageURL ?eventID WHERE {
+  ?eventID     rdf:type            sem:Event  .
+  ?eventID     dive:depictedBy     ?mediaObj  .
+  ?eventID     rdfs:label          ?label     .
+  ?mediaObj    dive:inCollection   ?_collection .
+  ?mediaObj    dcterms:identifier  ?imageURL
+  FILTER NOT EXISTS { ?eventID sem:hasActor ?actor }
+} LIMIT 30
