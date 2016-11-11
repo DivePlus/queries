@@ -1,6 +1,7 @@
 #+ summary: List events which have an imageURL associated with them,
 #+          but not yet an actor
 #+ endpoint: http://data.dive.beeldengeluid.nl/sparql/
+#+ headers: { 'Accept' : 'application/sparql-results+json' }
 #+ idField: eventID
 #+ parameters: collection
 #+ tags:

@@ -1,5 +1,6 @@
 #+ summary: List media objects with no source
 #+ endpoint: http://data.dive.beeldengeluid.nl/sparql/
+#+ headers: { 'Accept' : 'application/sparql-results+json' }
 #+ idField: item
 #+ tags:
 #+      - Dive-Dashboard (unused)
