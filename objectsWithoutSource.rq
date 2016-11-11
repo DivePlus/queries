@@ -1,4 +1,4 @@
-#+ summary: List media objects with no source	
+#+ summary: List media objects with no source
 #+ endpoint: http://data.dive.beeldengeluid.nl/sparql/
 #+ idField: item
 #+ tags:

@@ -1,5 +1,5 @@
 #+ summary: List events which have a description text associated with them, but
-#           no entities have been identified in these events.
+#+          no entities have been identified in these events.
 #+ endpoint: http://data.dive.beeldengeluid.nl/sparql/
 #+ idField: eventID
 #+ parameters: collection
