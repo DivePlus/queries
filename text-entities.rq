@@ -11,6 +11,7 @@ PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 PREFIX dcterms: <http://purl.org/dc/terms/>
 PREFIX oa: <http://www.w3.org/ns/oa#>
 PREFIX prov: <http://www.w3.org/ns/prov#>
+PREFIX dive: <http://purl.org/collections/nl/dive/>
 
 SELECT ?label ?eventID ?text
 WHERE {
@@ -26,6 +27,6 @@ WHERE {
     ?annotationID dive:adds    ?enrichmentID .
     ?enrichmentID sem:hasActor ?actor
   }
-  ?mediaObj    dive:inCollection   ___collection___ .
+  ?mediaObj    dive:inCollection   ?_collection .
   FILTER (!BOUND(?actor))
 } LIMIT 30

@@ -5,6 +5,7 @@
 #+      - Dive-Dashboard (unused)
 
 PREFIX sem: <http://semanticweb.cs.vu.nl/2009/11/sem/>
+PREFIX dive: <http://purl.org/collections/nl/dive/>
 
 SELECT ?event ?mo ?title ?actor ?actorName ?place ?placeName WHERE
 {

@@ -6,9 +6,10 @@
 
 PREFIX am: <http://vocab.deri.ie/am#>
 PREFIX edm: <http://www.europeana.eu/schemas/edm/>
+PREFIX dive: <http://purl.org/collections/nl/dive/>
 
 SELECT ?item  WHERE {
-    ?item dive:inCollection <___collection___> .
+    ?item dive:inCollection <?_collection> .
     ?item a ?type .
     ?type rdfs:subClassOf* dive:MediaObject .
     ?item am:title ?title .

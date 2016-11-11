@@ -1,4 +1,5 @@
-#+ summary: List events which have an imageURL associated with them, but not yet an actor
+#+ summary: List events which have an imageURL associated with them,
+#+          but not yet an actor
 #+ endpoint: http://data.dive.beeldengeluid.nl/sparql/
 #+ idField: eventID
 #+ parameters: collection
