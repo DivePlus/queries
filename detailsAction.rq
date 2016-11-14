@@ -1,0 +1,28 @@
+#+ summary: Returns DIVE entity details, based on a entity id
+#+ endpoint: http://data.dive.beeldengeluid.nl/sparql/
+#+ headers: { 'Accept' : 'application/sparql-results+json' }
+#+ idField: label
+#+ tags:
+#+      - Dive-UI
+
+PREFIX sem: <http://semanticweb.cs.vu.nl/2009/11/sem/>
+PREFIX dive: <http://purl.org/collections/nl/dive/>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
+PREFIX dc: <http://purl.org/dc/elements/1.1/>
+PREFIX dcterms: <http://purl.org/dc/terms/>
+
+SELECT DISTINCT ?label ?description ?link ?timestamp ?type (SAMPLE(?adbpediatype) AS ?dbpediatype) (SAMPLE(?aplaceholder) AS ?placeholder) (SAMPLE(?asource) AS ?source)
+WHERE {
+ ?_id rdfs:label ?label.
+ ?_id rdf:type ?type.
+ FILTER(?type=sem:Actor || ?type = sem:Place || ?type = sem:Event || ?type = dive:Person || ?type = skos:Concept || ?type=dive:MediaObject)
+ OPTIONAL { ?_id dc:description|dcterms:abstract|dcterms:description ?description. }
+ OPTIONAL { ?_id dive:hasExternalLink ?link. FILTER(str(?link) != "") }
+ OPTIONAL { ?_id dive:depictedBy ?adepict. ?adepict dive:source ?asource. ?adepict dive:placeholder ?aplaceholder.}
+ OPTIONAL { ?_id dive:source ?asource. ?entity dive:placeholder ?aplaceholder.}
+ OPTIONAL { ?_id rdf:type sem:Event. ?_id dive:hasTimeStamp ?timestamp }
+ OPTIONAL { ?_id dive:dbpediaType ?adbpediatype }
+}
+GROUP BY ?label ?description ?link ?timestamp ?type
+LIMIT 1

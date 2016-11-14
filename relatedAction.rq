@@ -1,0 +1,58 @@
+#+ summary: Returns DIVE entities related to entity with entityId id
+#+ endpoint: http://data.dive.beeldengeluid.nl/sparql/
+#+ headers: { 'Accept' : 'application/sparql-results+json' }
+#+ idField: entity
+#+ pagination: 50
+#+ tags:
+#+      - Dive-UI
+
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX sem: <http://semanticweb.cs.vu.nl/2009/11/sem/>
+PREFIX dive: <http://purl.org/collections/nl/dive/>
+PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
+PREFIX owl: <http://www.w3.org/2002/07/owl#>
+
+SELECT DISTINCT ?entity ?type (SAMPLE(?aevent) AS ?event) (SAMPLE(?asource) AS ?source) (SAMPLE(?aplaceholder) AS ?placeholder) (SAMPLE(?alabel) as ?label) (SAMPLE(?atimestamp) as ?timestamp) (SAMPLE(?adbpediaType) AS ?dbpediaType)
+WHERE
+{
+  {
+    {
+      SELECT DISTINCT ?entity ?aevent WHERE {
+        { ?_id_en (owl:sameAs*|^owl:sameAs*) ?same.
+          ?same (dive:isRelatedTo|^dive:isRelatedTo) ?entity.
+        } UNION {  ?_id_en skos:exactMatch ?match.
+          ?same skos:exactMatch ?match.
+          ?same (dive:isRelatedTo|^dive:isRelatedTo) ?entity.
+        } UNION {
+          ?_id_en (dive:isRelatedTo|^dive:isRelatedTo) ?entity.
+        } UNION {
+          ?_id_en (dive:isRelatedTo|^dive:isRelatedTo) ?aevent.
+          ?aevent rdf:type sem:Event.
+          ?aevent (dive:isRelatedTo|^dive:isRelatedTo) ?entity.
+        } UNION {
+          ?_id_en (owl:sameAs*|^owl:sameAs*) ?same.
+          ?same (dive:isRelatedTo|^dive:isRelatedTo) ?aevent.
+          ?aevent rdf:type sem:Event.
+          ?aevent (dive:isRelatedTo|^dive:isRelatedTo) ?entity.
+        }
+      } GROUP BY ?entity ?aevent
+    }
+    FILTER(?entity != ?_id_en)
+    ?entity rdf:type ?type.
+    FILTER(?type=sem:Actor || ?type = sem:Place || ?type = sem:Event || ?type = dive:Person || ?type = skos:Concept || ?type=dive:MediaObject)
+    OPTIONAL { ?entity rdfs:label ?alabel. }
+    OPTIONAL { ?entity dive:depictedBy ?adepict.
+               ?adepict dive:source ?asource.
+              ?adepict dive:placeholder ?aplaceholder.
+             }
+    OPTIONAL { ?entity dive:source ?asource.
+               ?entity dive:placeholder ?aplaceholder.
+            }
+    OPTIONAL { ?entity dive:hasTimeStamp ?atimestamp }
+    OPTIONAL { ?entity dive:dbpediaType ?adbpediatype }
+  }
+}
+GROUP BY ?entity ?type
+ORDER BY ASC(?event)
+ASC(?timestamp)
