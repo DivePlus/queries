@@ -4,6 +4,8 @@
 #+ headers: { 'Accept' : 'application/sparql-results+json' }
 #+ idField: eventID
 #+ parameters: collection
+#+ enumerate:
+#+   - collection
 #+ tags:
 #+      - Dive-Dashboard
 
