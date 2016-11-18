@@ -19,26 +19,17 @@ WHERE
   {
     {
       SELECT DISTINCT ?entity ?aevent WHERE {
-        { ?_id_en (owl:sameAs*|^owl:sameAs*) ?same.
+        { ?_id (owl:sameAs*|^owl:sameAs*) ?same.
           ?same (dive:isRelatedTo|^dive:isRelatedTo) ?entity.
-        } UNION {  ?_id_en skos:exactMatch ?match.
+        } UNION {  ?_id skos:exactMatch ?match.
           ?same skos:exactMatch ?match.
           ?same (dive:isRelatedTo|^dive:isRelatedTo) ?entity.
         } UNION {
-          ?_id_en (dive:isRelatedTo|^dive:isRelatedTo) ?entity.
-        } UNION {
-          ?_id_en (dive:isRelatedTo|^dive:isRelatedTo) ?aevent.
-          ?aevent rdf:type sem:Event.
-          ?aevent (dive:isRelatedTo|^dive:isRelatedTo) ?entity.
-        } UNION {
-          ?_id_en (owl:sameAs*|^owl:sameAs*) ?same.
-          ?same (dive:isRelatedTo|^dive:isRelatedTo) ?aevent.
-          ?aevent rdf:type sem:Event.
-          ?aevent (dive:isRelatedTo|^dive:isRelatedTo) ?entity.
+          ?_id (dive:isRelatedTo|^dive:isRelatedTo) ?entity.
         }
       } GROUP BY ?entity ?aevent
     }
-    FILTER(?entity != ?_id_en)
+    FILTER(?entity != ?_id)
     ?entity rdf:type ?type.
     FILTER(?type=sem:Actor || ?type = sem:Place || ?type = sem:Event || ?type = dive:Person || ?type = skos:Concept || ?type=dive:MediaObject)
     OPTIONAL { ?entity rdfs:label ?alabel. }
