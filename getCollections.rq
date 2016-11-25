@@ -1,6 +1,5 @@
 #+ summary: List all collections on DIVE repository
 #+ endpoint: http://data.dive.beeldengeluid.nl/sparql/
-#+ headers: { 'Accept' : 'application/sparql-results+json' }
 #+ idField: uri
 #+ tags:
 #+      - Dive-Dashboard

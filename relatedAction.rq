@@ -1,6 +1,5 @@
 #+ summary: Returns DIVE entities related to entity with entityId id
 #+ endpoint: http://data.dive.beeldengeluid.nl/sparql/
-#+ headers: { 'Accept' : 'application/sparql-results+json' }
 #+ idField: entity
 #+ pagination: 50
 #+ tags:
@@ -19,17 +18,17 @@ WHERE
   {
     {
       SELECT DISTINCT ?entity ?aevent WHERE {
-        { ?_id (owl:sameAs*|^owl:sameAs*) ?same.
+        { ?_id_iri (owl:sameAs*|^owl:sameAs*) ?same.
           ?same (dive:isRelatedTo|^dive:isRelatedTo) ?entity.
-        } UNION {  ?_id skos:exactMatch ?match.
+        } UNION {  ?_id_iri skos:exactMatch ?match.
           ?same skos:exactMatch ?match.
           ?same (dive:isRelatedTo|^dive:isRelatedTo) ?entity.
         } UNION {
-          ?_id (dive:isRelatedTo|^dive:isRelatedTo) ?entity.
+          ?_id_iri (dive:isRelatedTo|^dive:isRelatedTo) ?entity.
         }
       } GROUP BY ?entity ?aevent
     }
-    FILTER(?entity != ?_id)
+    FILTER(?entity != ?_id_iri)
     ?entity rdf:type ?type.
     FILTER(?type=sem:Actor || ?type = sem:Place || ?type = sem:Event || ?type = dive:Person || ?type = skos:Concept || ?type=dive:MediaObject)
     OPTIONAL { ?entity rdfs:label ?alabel. }

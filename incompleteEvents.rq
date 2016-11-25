@@ -1,7 +1,8 @@
 #+ summary: List events without both actors and places
 #+ endpoint: http://data.dive.beeldengeluid.nl/sparql/
-#+ headers: { 'Accept' : 'application/sparql-results+json' }
 #+ idField: item
+#+ enumerate:
+#+   - collection
 #+ tags:
 #+      - Dive-Dashboard (unused)
 
@@ -12,7 +13,7 @@ SELECT ?event ?mo ?title ?actor ?actorName ?place ?placeName WHERE
 {
     ?event a sem:Event .
     ?event dive:depictedBy ?mo .
-    ?mo dive:inCollection <%s> .
+    ?mo dive:inCollection ?_collection_iri .
     ?hasTitle rdfs:subClassOf* rdfs:label .
       ?mo ?hasTitle ?title .
     OPTIONAL {

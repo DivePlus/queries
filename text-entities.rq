@@ -1,9 +1,10 @@
 #+ summary: List events which have a description text associated with them, but
 #+          no entities have been identified in these events.
 #+ endpoint: http://data.dive.beeldengeluid.nl/sparql/
-#+ headers: { 'Accept' : 'application/sparql-results+json' }
 #+ idField: eventID
 #+ parameters: collection
+#+ enumerate:
+#+   - collection
 #+ tags:
 #+      - Dive-Dashboard
 
@@ -28,6 +29,6 @@ WHERE {
     ?annotationID dive:adds    ?enrichmentID .
     ?enrichmentID sem:hasActor ?actor
   }
-  ?mediaObj    dive:inCollection   ?_collection
+  ?mediaObj    dive:inCollection   ?_collection_iri
   FILTER (!BOUND(?actor))
 } LIMIT 30

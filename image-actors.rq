@@ -1,7 +1,6 @@
 #+ summary: List events which have an imageURL associated with them,
 #+          but not yet an actor
 #+ endpoint: http://data.dive.beeldengeluid.nl/sparql/
-#+ headers: { 'Accept' : 'application/sparql-results+json' }
 #+ idField: eventID
 #+ parameters: collection
 #+ enumerate:
@@ -17,7 +16,7 @@ SELECT ?label ?imageURL ?eventID WHERE {
   ?eventID     rdf:type            sem:Event  .
   ?eventID     dive:depictedBy     ?mediaObj  .
   ?eventID     rdfs:label          ?label     .
-  ?mediaObj    dive:inCollection   ?_collection .
+  ?mediaObj    dive:inCollection   ?_collection_iri .
   ?mediaObj    dcterms:identifier  ?imageURL
   FILTER NOT EXISTS { ?eventID sem:hasActor ?actor }
 } LIMIT 30

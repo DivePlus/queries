@@ -1,6 +1,5 @@
 #+ summary: Creates search query from keywordlist, offset and limit
 #+ endpoint: http://data.dive.beeldengeluid.nl/sparql/
-#+ headers: { 'Accept' : 'application/sparql-results+json' }
 #+ idField: entity
 #+ pagination: 50
 #+ tags:

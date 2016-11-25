@@ -1,7 +1,8 @@
 #+ summary: List media objects with no source
 #+ endpoint: http://data.dive.beeldengeluid.nl/sparql/
-#+ headers: { 'Accept' : 'application/sparql-results+json' }
 #+ idField: item
+#+ enumerate:
+#+   - collection
 #+ tags:
 #+      - Dive-Dashboard (unused)
 
@@ -10,7 +11,7 @@ PREFIX edm: <http://www.europeana.eu/schemas/edm/>
 PREFIX dive: <http://purl.org/collections/nl/dive/>
 
 SELECT ?item  WHERE {
-    ?item dive:inCollection <?_collection> .
+    ?item dive:inCollection ?_collection_iri .
     ?item a ?type .
     ?type rdfs:subClassOf* dive:MediaObject .
     ?item am:title ?title .
