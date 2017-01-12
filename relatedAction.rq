@@ -11,8 +11,9 @@ PREFIX sem: <http://semanticweb.cs.vu.nl/2009/11/sem/>
 PREFIX dive: <http://purl.org/collections/nl/dive/>
 PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
 PREFIX owl: <http://www.w3.org/2002/07/owl#>
+PREFIX dcterms: <http://purl.org/dc/terms/>
 
-SELECT DISTINCT ?entity ?type (SAMPLE(?aevent) AS ?event) (SAMPLE(?asource) AS ?source) (SAMPLE(?aplaceholder) AS ?placeholder) (SAMPLE(?alabel) as ?label) (SAMPLE(?atimestamp) as ?timestamp) (SAMPLE(?adbpediaType) AS ?dbpediaType)
+SELECT DISTINCT ?entity ?type (SAMPLE(?aevent) AS ?event) (SAMPLE(?asource) AS ?source) (SAMPLE(?aplaceholder) AS ?placeholder) (SAMPLE(?alabel) as ?label) (SAMPLE(?atimestamp) as ?timestamp) (SAMPLE(?adbpediaType) AS ?dbpediaType) (SAMPLE(?adescription) AS ?description)
 WHERE
 {
   {
@@ -34,7 +35,8 @@ WHERE
     OPTIONAL { ?entity rdfs:label ?alabel. }
     OPTIONAL { ?entity dive:depictedBy ?adepict.
                ?adepict dive:source ?asource.
-              ?adepict dive:placeholder ?aplaceholder.
+               ?adepict dive:placeholder ?aplaceholder.
+               ?adepict dcterms:description ?adescription.
              }
     OPTIONAL { ?entity dive:source ?asource.
                ?entity dive:placeholder ?aplaceholder.
