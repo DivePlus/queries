@@ -3,7 +3,7 @@
 #+ idField: entity
 #+ pagination: 50
 #+ tags:
-#+      - Dive-UI
+#+      - Dive-UI-DBPedia
 PREFIX owl: <http://www.w3.org/2002/07/owl#>
 PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
@@ -15,21 +15,21 @@ PREFIX dbpedia2: <http://dbpedia.org/property/>
 PREFIX dbpedia: <http://dbpedia.org/>
 PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
 
-SELECT DISTINCT ?entity ?type ?source ?placeholder ?label ?timestamp ?dbpediaType
+SELECT DISTINCT ?entity ?type ?source ?placeholder ?label SAMPLE(?timestamp) as ?timestamp ?dbpediaType ?description ?relations
 WHERE
 {
   {
     {
-      SELECT DISTINCT ?entity
+      SELECT DISTINCT ?entity ?dobRelated ?placeRelated
       WHERE {
         {
           ?_id_iri <http://dbpedia.org/ontology/birthDate> ?dob .
           ?entity <http://dbpedia.org/ontology/birthDate> ?dob
-          BIND("birth date" AS ?relation)
+          BIND("dobRelated" AS ?dobRelated)
         } UNION {
           ?_id_iri <http://dbpedia.org/ontology/birthPlace> ?birthPlace .
           ?entity <http://dbpedia.org/ontology/birthPlace> ?birthPlace
-          BIND("birth place" AS ?relation)
+          BIND("placeRelated" AS ?placeRelated)
         }
       }
       LIMIT 50
@@ -40,8 +40,13 @@ WHERE
     FILTER (langMatches(lang(?label),"en"))
     OPTIONAL { ?entity foaf:depiction ?placeholder  }
     OPTIONAL { ?entity <http://dbpedia.org/ontology/birthDate> ?timestamp }
-    OPTIONAL { ?entity <http://dbpedia.org/ontology/birthPlace> ?source  }
+    OPTIONAL { ?_id_iri <http://dbpedia.org/ontology/birthPlace> ?source .
+               ?entity <http://dbpedia.org/ontology/birthPlace> ?source .
+               ?source rdf:type <http://dbpedia.org/ontology/Settlement> }
+    OPTIONAL { ?entity <http://dbpedia.org/ontology/abstract> ?description .
+               FILTER (langMatches(lang(?description),"en")) }
 
     BIND( "person" as ?type )
+    BIND( CONCAT(?dobRelated, ?placeRelated) as ?relations )
   }
 }

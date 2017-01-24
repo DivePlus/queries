@@ -3,7 +3,7 @@
 #+ idField: entity
 #+ pagination: 50
 #+ tags:
-#+      - Dive-UI
+#+      - Dive-UI-DBPedia
 PREFIX owl: <http://www.w3.org/2002/07/owl#>
 PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
@@ -24,8 +24,8 @@ WHERE {
   FILTER (langMatches(lang(?label),"en"))
   OPTIONAL { ?entity foaf:depiction ?placeholder  }
   OPTIONAL { ?entity <http://dbpedia.org/ontology/birthDate> ?timestamp }
-  OPTIONAL { ?entity <http://dbpedia.org/ontology/birthPlace> ?source  }
-
+  OPTIONAL { ?entity <http://dbpedia.org/ontology/birthPlace> ?source .
+             ?source rdf:type <http://dbpedia.org/ontology/Settlement> }
   BIND( "person" as ?type )
 }
 LIMIT 50

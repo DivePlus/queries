@@ -12,7 +12,7 @@ PREFIX sem: <http://semanticweb.cs.vu.nl/2009/11/sem/>
 PREFIX tpf: <http://cliopatria.swi-prolog.org/pf/text#>
 PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
 
-SELECT DISTINCT ?entity ?type (SAMPLE(?asource) AS ?source) (SAMPLE(?aplaceholder) AS ?placeholder) (SAMPLE(?alabel) as ?label) (SAMPLE(?atimestamp) as ?timestamp) (SAMPLE(?adbpediaType) AS ?dbpediaType)
+SELECT DISTINCT ?entity ?type (SAMPLE(?asource) AS ?source) (SAMPLE(?aplaceholder) AS ?placeholder) (SAMPLE(?alabel) as ?label) (SAMPLE(?atimestamp) as ?timestamp) (SAMPLE(?adbpediaType) AS ?dbpediaType) (SAMPLE(?adescription) AS ?description)
 WHERE {
    ?entity tpf:match (?labelpred ?_keywordsList ?alabel1).
    ?entity rdf:type ?type.
@@ -22,5 +22,10 @@ WHERE {
    OPTIONAL { ?entity dive:source ?asource. ?entity dive:placeholder ?aplaceholder.}
    OPTIONAL { ?entity dive:hasTimeStamp ?atimestamp }
    OPTIONAL { ?entity dive:dbpediaType ?adbpediatype }
+   OPTIONAL { ?entity dive:depictedBy ?adepict.
+              ?adepict dive:source ?asource.
+              ?adepict dive:placeholder ?aplaceholder.
+              ?adepict dcterms:description ?adescription.
+            }
 }
 GROUP BY ?entity ?type
