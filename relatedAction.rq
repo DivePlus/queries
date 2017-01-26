@@ -46,6 +46,6 @@ WHERE
     BIND("Related to,Contains," as ?relations)
   }
 }
-GROUP BY ?entity ?type
+GROUP BY ?entity ?type ?relations
 ORDER BY ASC(?event)
 ASC(?timestamp)
