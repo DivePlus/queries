@@ -19,8 +19,10 @@ WHERE {
  OPTIONAL { ?_id_iri dc:description|dcterms:abstract|dcterms:description ?description. }
  OPTIONAL { ?_id_iri dive:hasExternalLink ?link. FILTER(str(?link) != "") }
  OPTIONAL { ?_id_iri dive:depictedBy ?adepict. ?adepict dive:source ?asource. ?adepict dive:placeholder ?aplaceholder.}
- OPTIONAL { ?_id_iri dive:source ?asource. ?entity dive:placeholder ?aplaceholder.}
- OPTIONAL { ?_id_iri rdf:type sem:Event. ?_id_iri dive:hasTimeStamp ?timestamp }
+ OPTIONAL { ?_id_iri dive:source ?asource.
+            ?_id_iri dive:placeholder ?aplaceholder.}
+ OPTIONAL { ?_id_iri rdf:type sem:Event.
+            ?_id_iri dive:hasTimeStamp ?timestamp }
  OPTIONAL { ?_id_iri dive:dbpediaType ?adbpediatype }
 }
 GROUP BY ?label ?description ?link ?timestamp ?type
