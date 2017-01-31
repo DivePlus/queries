@@ -4,9 +4,9 @@
 #+ tags:
 #+      - Dive-UI
 
-SELECT ?type ?id ?title ?description ?startDate ?endDate
+SELECT ?type ?entity ?label ?description ?startDate ?endDate
 WHERE {
-  VALUES (?type ?id ?title ?description ?startDate ?endDate) {
+  VALUES (?type ?entity ?label ?description ?startDate ?endDate) {
     ( "person" "person-paul" "Paul McCartney"  "This is Paul" "" "" )
     ( "concept" "concept-rocknroll" "Rock 'n Roll"  "This is rock 'n roll, woohoo!"  "" "" )
     ( "event" "event-beatles-amsterdam" "Beatles in Amsterdam"  "The beatles were in Amsterdam"  "1970-10-06 12:00" "1970-10-06 23:00" )
