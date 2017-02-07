@@ -11,6 +11,7 @@ PREFIX dive: <http://purl.org/collections/nl/dive/>
 PREFIX sem: <http://semanticweb.cs.vu.nl/2009/11/sem/>
 PREFIX tpf: <http://cliopatria.swi-prolog.org/pf/text#>
 PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
+PREFIX dcterms: <http://purl.org/dc/terms/>
 
 SELECT DISTINCT ?entity ?type (SAMPLE(?asource) AS ?source) (SAMPLE(?aplaceholder) AS ?placeholder) (SAMPLE(?alabel) as ?label) (SAMPLE(?atimestamp) as ?startDate) (SAMPLE(?adbpediaType) AS ?dbpediaType) (SAMPLE(?adescription) AS ?description) ?relations
 WHERE {
