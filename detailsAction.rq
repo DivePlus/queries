@@ -11,7 +11,7 @@ PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
 PREFIX dc: <http://purl.org/dc/elements/1.1/>
 PREFIX dcterms: <http://purl.org/dc/terms/>
 
-SELECT DISTINCT ?label ?description ?link ?timestamp ?type (SAMPLE(?adbpediatype) AS ?dbpediatype) (SAMPLE(?aplaceholder) AS ?placeholder) (SAMPLE(?asource) AS ?source)
+SELECT DISTINCT ?label ?description ?link ?timestamp ?type (SAMPLE(?adbpediatype) AS ?dbpediatype) (SAMPLE(?aplaceholder) AS ?placeholder) (SAMPLE(?asource) AS ?source) ?relations
 WHERE {
  ?_id_iri rdfs:label ?label.
  ?_id_iri rdf:type ?type.
@@ -24,6 +24,7 @@ WHERE {
  OPTIONAL { ?_id_iri rdf:type sem:Event.
             ?_id_iri dive:hasTimeStamp ?timestamp }
  OPTIONAL { ?_id_iri dive:dbpediaType ?adbpediatype }
+ BIND("Matches query," as ?relations)
 }
-GROUP BY ?label ?description ?link ?timestamp ?type
+GROUP BY ?label ?description ?link ?timestamp ?type ?relations
 LIMIT 1

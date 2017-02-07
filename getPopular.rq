@@ -4,7 +4,7 @@
 #+ tags:
 #+      - Dive-UI
 
-SELECT ?type ?entity ?label ?description ?startDate ?endDate
+SELECT ?type ?entity ?label ?description ?startDate ?endDate ?relations
 WHERE {
   VALUES (?type ?entity ?label ?description ?startDate ?endDate) {
     ( "person" "person-paul" "Paul McCartney"  "This is Paul" "" "" )
@@ -14,4 +14,5 @@ WHERE {
     ( "location" "location-amsterdam" "Amsterdam"  "Amsterdam is the Dutch Capital city"  "" "" )
     ( "project" "project-beatles-in-nl" "Beatles in NL"  "A Project about the visit of the beatles in the Netherlands"  "" "" )
   }
+  BIND("Popular," as ?relations)
 }
