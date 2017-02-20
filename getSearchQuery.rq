@@ -17,7 +17,7 @@ SELECT DISTINCT ?entity ?type (SAMPLE(?asource) AS ?source) (SAMPLE(?aplaceholde
 WHERE {
    ?entity tpf:match (?labelpred ?_keywordsList ?alabel1).
    ?entity rdf:type ?type.
-   FILTER(?type=sem:Actor || ?type = sem:Place || ?type = sem:Event || ?type = dive:Person  ||?type=dive:MediaObject)
+   FILTER(?type=sem:Actor || ?type = sem:Place || ?type = sem:Event || ?type=dive:MediaObject)
    OPTIONAL { ?entity rdfs:label ?alabel}.
    OPTIONAL { ?entity dive:depictedBy ?depict. ?depict dive:source ?asource. ?depict dive:placeholder ?aplaceholder. }
    OPTIONAL { ?entity dive:source ?asource. ?entity dive:placeholder ?aplaceholder.}
