@@ -31,7 +31,7 @@ WHERE
     }
     FILTER(?entity != ?_id_iri)
     ?entity rdf:type ?type.
-    FILTER(?type=sem:Actor || ?type = sem:Place || ?type = sem:Event || ?type = dive:Person || ?type = skos:Concept || ?type=dive:MediaObject)
+    FILTER(?type=sem:Actor || ?type = sem:Place || ?type = sem:Event || ?type = skos:Concept || ?type=dive:MediaObject)
     OPTIONAL { ?entity rdfs:label ?alabel. }
     OPTIONAL { ?entity dive:depictedBy ?adepict.
                ?adepict dive:source ?asource.

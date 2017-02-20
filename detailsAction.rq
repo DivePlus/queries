@@ -15,7 +15,7 @@ SELECT DISTINCT ?label ?description ?link ?timestamp ?type (SAMPLE(?adbpediatype
 WHERE {
  ?_id_iri rdfs:label ?label.
  ?_id_iri rdf:type ?type.
- FILTER(?type=sem:Actor || ?type = sem:Place || ?type = sem:Event || ?type = dive:Person || ?type = skos:Concept || ?type=dive:MediaObject)
+ FILTER(?type=sem:Actor || ?type = sem:Place || ?type = sem:Event || ?type = skos:Concept || ?type=dive:MediaObject)
  OPTIONAL { ?_id_iri dc:description|dcterms:abstract|dcterms:description ?description. }
  OPTIONAL { ?_id_iri dive:hasExternalLink ?link. FILTER(str(?link) != "") }
  OPTIONAL { ?_id_iri dive:depictedBy ?adepict. ?adepict dive:source ?asource. ?adepict dive:placeholder ?aplaceholder.}
