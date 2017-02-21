@@ -31,3 +31,4 @@ WHERE {
   BIND("Matches query," as ?relations)
 }
 GROUP BY ?entity ?type ?relations
+LIMIT 50

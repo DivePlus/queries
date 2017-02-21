@@ -49,3 +49,4 @@ WHERE
 GROUP BY ?entity ?type ?relations
 ORDER BY ASC(?event)
 ASC(?timestamp)
+LIMIT 50
