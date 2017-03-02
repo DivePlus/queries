@@ -3,7 +3,7 @@
 #+ idField: type
 #+ tags:
 #+      - Dive-UI
-SELECT ?type ?count ?label ?description WHERE {
+SELECT ?type ?count ?title ?description WHERE {
   {
     SELECT ?type (COUNT(?item) as ?count) {
       VALUES ?type {
@@ -16,6 +16,6 @@ SELECT ?type ?count ?label ?description WHERE {
       ?item rdf:type ?type
     } GROUP BY ?type
   }
-  ?type rdfs:label ?label .
+  ?type rdfs:label ?title .
   OPTIONAL { ?type (rdfs:comment|skos:definition) ?description }
 }
