@@ -3,6 +3,11 @@
 #+ idField: type
 #+ tags:
 #+      - Dive-UI
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX dive: <http://purl.org/collections/nl/dive/>
+PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
+
 SELECT ?type ?count ?title ?description WHERE {
   {
     SELECT ?type (COUNT(?item) as ?count) {
