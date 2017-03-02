@@ -3,15 +3,19 @@
 #+ idField: type
 #+ tags:
 #+      - Dive-UI
-
-SELECT ?type ?count ?title ?description WHERE {
-  VALUES (?type ?count ?title ?description) {
-   ( "event"        8123 "Events"       "An event")
-   ( "mediaobject" 23116 "MediaObjects" "MediaObjects description" )
-   ( "person"       1222 "People"       "People description" )
-   ( "location"     6051 "Locations"    "Locations description" )
-   ( "concept"      4988 "Concepts"     "Concepts description" )
-   ( "project"       123 "Projects"     "Projects description" )
-
+SELECT ?type ?count ?label ?description WHERE {
+  {
+    SELECT ?type (COUNT(?item) as ?count) {
+      VALUES ?type {
+         <http://semanticweb.cs.vu.nl/2009/11/sem/Event>
+         <http://semanticweb.cs.vu.nl/2009/11/sem/Actor>
+         <http://semanticweb.cs.vu.nl/2009/11/sem/Place>
+         dive:MediaObject
+         skos:Concept
+      }
+      ?item rdf:type ?type
+    } GROUP BY ?type
   }
+  ?type rdfs:label ?label .
+  OPTIONAL { ?type (rdfs:comment|skos:definition) ?description }
 }
