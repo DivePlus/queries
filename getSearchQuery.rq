@@ -12,13 +12,17 @@ PREFIX sem: <http://semanticweb.cs.vu.nl/2009/11/sem/>
 PREFIX tpf: <http://cliopatria.swi-prolog.org/pf/text#>
 PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
 PREFIX dcterms: <http://purl.org/dc/terms/>
+PREFIX dc: <http://purl.org/dc/elements/1.1/>
 
-SELECT DISTINCT ?entity ?type (SAMPLE(?asource) AS ?source) (SAMPLE(?aplaceholder) AS ?placeholder) (SAMPLE(?alabel) as ?label) (SAMPLE(?atimestamp) as ?startDate) (SAMPLE(?adbpediaType) AS ?dbpediaType) (SAMPLE(?adescription) AS ?description) ?relations
+SELECT DISTINCT ?entity ?type (SAMPLE(?asource) AS ?source) (SAMPLE(?aplaceholder) AS ?placeholder) (SAMPLE(?alabel) as ?label) (SAMPLE(?atimestamp) as ?startDate) (SAMPLE(?adbpediaType) AS ?dbpediaType) (SAMPLE(?adescription) AS ?description) (group_concat(concat(str(?pred)," ",str(?obj));separator="; ") as ?metadataarray) ?relations
 WHERE {
-   ?entity tpf:match (?labelpred ?_keywordsList ?alabel1).
+   BIND(concat(?_keywordsList, "/i") as ?keyword)
+   ?entity tpf:match (?labelpred ?keyword ?alabel1).
    ?entity rdf:type ?type.
+   ?entity ?pred ?obj .
    FILTER(?type=sem:Actor || ?type = sem:Place || ?type = sem:Event || ?type=dive:MediaObject)
    OPTIONAL { ?entity rdfs:label ?alabel}.
+   OPTIONAL { ?entity dc:description ?adescription}
    OPTIONAL { ?entity dive:depictedBy ?depict. ?depict dive:source ?asource. ?depict dive:placeholder ?aplaceholder. }
    OPTIONAL { ?entity dive:source ?asource. ?entity dive:placeholder ?aplaceholder.}
    OPTIONAL { ?entity dive:hasTimeStamp ?atimestamp }
