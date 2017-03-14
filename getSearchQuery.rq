@@ -23,7 +23,7 @@ SELECT DISTINCT ?entity ?type (group_concat(concat(str(?pred)," ",str(?obj));sep
           ?entity rdf:type ?type.
           FILTER(?type=sem:Actor || ?type = sem:Place || ?type = sem:Event || ?type=dive:MediaObject)
         }
-        LIMIT 1000
+        LIMIT 500
     } .
     ?entity ?pred ?obj.
 
