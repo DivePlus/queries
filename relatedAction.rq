@@ -47,5 +47,5 @@ WHERE
   }
 }
 GROUP BY ?entity ?type ?relations
-ASC(?timestamp)
+ORDER BY ASC(?timestamp)
 LIMIT 50
