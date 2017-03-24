@@ -43,7 +43,7 @@ WHERE
             }
     OPTIONAL { ?entity dive:hasTimeStamp ?atimestamp }
     OPTIONAL { ?entity dive:dbpediaType ?adbpediatype }
-    BIND("Related to,Contains," as ?relations)
+    BIND("Related to" as ?relations)
   }
 }
 GROUP BY ?entity ?type ?relations
