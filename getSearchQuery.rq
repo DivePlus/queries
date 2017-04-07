@@ -18,7 +18,7 @@ SELECT DISTINCT ?entity ?type (group_concat(concat(str(?pred)," ",str(?obj));sep
     {
         SELECT DISTINCT ?entity ?type
         WHERE {
-          BIND(concat(?_keywordsList, "/i") as ?keyword)
+          BIND(?_keywordsList as ?keyword)
           ?entity tpf:match (?labelpred ?keyword ?alabel1).
           ?entity rdf:type ?type.
           FILTER(?type=sem:Actor || ?type = sem:Place || ?type = sem:Event || ?type=dive:MediaObject)
