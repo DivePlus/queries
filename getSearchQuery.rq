@@ -14,7 +14,7 @@ PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
 PREFIX dcterms: <http://purl.org/dc/terms/>
 PREFIX dc: <http://purl.org/dc/elements/1.1/>
 
-SELECT DISTINCT ?entity ?type (group_concat(concat(str(?pred)," ",str(?obj));separator="; ") as ?metadataarray) (SAMPLE(?asource) AS ?source) (SAMPLE(?aplaceholder) AS ?placeholder) (SAMPLE(?alabel) as ?label) (SAMPLE(?atimestamp) as ?startDate) (SAMPLE(?adbpediaType) AS ?dbpediaType) (SAMPLE(?adescription) AS ?description) ?relations WHERE {
+SELECT DISTINCT ?entity ?type (group_concat(concat(str(?pred)," ",str(?obj));separator="; ") as ?metadataarray) (SAMPLE(?asource) AS ?source) (SAMPLE(?aplaceholder) AS ?placeholder) (SAMPLE(?alabel) as ?label) (SAMPLE(?atimestamp) as ?startDate) (SAMPLE(?adbpediaType) AS ?dbpediaType) (SAMPLE(?adescription) AS ?description) (SAMPLE(?relations) as ?relations) WHERE {
     {
         SELECT DISTINCT ?entity ?type
         WHERE {
