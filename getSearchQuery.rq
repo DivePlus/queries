@@ -18,12 +18,12 @@ SELECT DISTINCT ?entity ?type (group_concat(concat(str(?pred)," ",str(?obj));sep
     {
         SELECT DISTINCT ?entity ?type
         WHERE {
-          BIND(?_keywordsList as ?keyword)
+          BIND(concat(?_keywordsList, "/i") as ?keyword)
           ?entity tpf:match (?labelpred ?keyword ?alabel1).
           ?entity rdf:type ?type.
           FILTER(?type=sem:Actor || ?type = sem:Place || ?type = sem:Event || ?type=dive:MediaObject)
         }
-        LIMIT 500
+        LIMIT 1000
     } .
     ?entity ?pred ?obj.
 
