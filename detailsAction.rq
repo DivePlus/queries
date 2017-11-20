@@ -11,20 +11,30 @@ PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
 PREFIX dc: <http://purl.org/dc/elements/1.1/>
 PREFIX dcterms: <http://purl.org/dc/terms/>
 
-SELECT DISTINCT ?label ?description ?link ?timestamp ?type (SAMPLE(?adbpediatype) AS ?dbpediatype) (SAMPLE(?aplaceholder) AS ?placeholder) (SAMPLE(?asource) AS ?source) ?relations
+SELECT DISTINCT ?label ?description ?link ?timestamp ?type (SAMPLE(?adbpediatype) AS ?dbpediatype) (SAMPLE(?aplaceholder) AS ?placeholder) (SAMPLE(?asource) AS ?source) ?relations ?license ?collection
 WHERE {
- ?_id_iri rdfs:label ?label.
- ?_id_iri rdf:type ?type.
- FILTER(?type=sem:Actor || ?type = sem:Place || ?type = sem:Event || ?type = skos:Concept || ?type=dive:MediaObject)
- OPTIONAL { ?_id_iri dc:description|dcterms:abstract|dcterms:description ?description. }
- OPTIONAL { ?_id_iri dive:hasExternalLink ?link. FILTER(str(?link) != "") }
- OPTIONAL { ?_id_iri dive:depictedBy ?adepict. ?adepict dive:source ?asource. ?adepict dive:placeholder ?aplaceholder.}
- OPTIONAL { ?_id_iri dive:source ?asource.
-            ?_id_iri dive:placeholder ?aplaceholder.}
- OPTIONAL { ?_id_iri rdf:type sem:Event.
-            ?_id_iri dive:hasTimeStamp ?timestamp }
- OPTIONAL { ?_id_iri dive:dbpediaType ?adbpediatype }
- BIND("Matches query," as ?relations)
+  ?_id_iri rdfs:label ?label.
+  ?_id_iri rdf:type ?type.
+  FILTER(?type=sem:Actor || ?type = sem:Place || ?type = sem:Event || ?type = skos:Concept || ?type=dive:MediaObject)
+  OPTIONAL { ?_id_iri dc:description|dcterms:abstract|dcterms:description ?description. }
+  OPTIONAL { ?_id_iri dive:hasExternalLink ?link. FILTER(str(?link) != "") }
+  OPTIONAL { ?_id_iri dive:depictedBy ?adepict. ?adepict dive:source ?asource. ?adepict dive:placeholder ?aplaceholder.}
+  OPTIONAL { ?_id_iri dive:source ?asource.
+             ?_id_iri dive:placeholder ?aplaceholder.}
+  OPTIONAL { ?_id_iri rdf:type sem:Event.
+             ?_id_iri dive:hasTimeStamp ?timestamp }
+  OPTIONAL { ?_id_iri dive:dbpediaType ?adbpediatype }
+
+  BIND("DEFAULT_LICENSE" as ?default_license)
+  BIND("DEFAULT_COLLECTION" as ?default_collection)
+
+  OPTIONAL { ?_id_iri dive:inCollection ?actual_collection }
+  OPTIONAL { ?_id_iri dc:rights ?actual_license}
+
+  BIND(coalesce(?actual_license, ?default_license) as ?license)
+  BIND(coalesce(?actual_collection, ?default_collection) as ?collection)
+
+  BIND("Matches query," as ?relations)
 }
-GROUP BY ?label ?description ?link ?timestamp ?type ?relations
+GROUP BY ?label ?description ?link ?timestamp ?type ?relations ?license ?collection
 LIMIT 1

@@ -13,7 +13,7 @@ PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
 PREFIX owl: <http://www.w3.org/2002/07/owl#>
 PREFIX dcterms: <http://purl.org/dc/terms/>
 
-SELECT DISTINCT ?entity ?type (SAMPLE(?asource) AS ?source) (SAMPLE(?aplaceholder) AS ?placeholder) (SAMPLE(?alabel) as ?label) (SAMPLE(?atimestamp) as ?startDate) (SAMPLE(?adbpediaType) AS ?dbpediaType) (SAMPLE(?adescription) AS ?description) ?relations
+SELECT DISTINCT ?entity ?type (SAMPLE(?asource) AS ?source) (SAMPLE(?aplaceholder) AS ?placeholder) (SAMPLE(?alabel) as ?label) (SAMPLE(?atimestamp) as ?startDate) (SAMPLE(?adbpediaType) AS ?dbpediaType) (SAMPLE(?adescription) AS ?description) ?relations ?license ?collection
 WHERE
 {
   {
@@ -43,9 +43,19 @@ WHERE
             }
     OPTIONAL { ?entity dive:hasTimeStamp ?atimestamp }
     OPTIONAL { ?entity dive:dbpediaType ?adbpediatype }
+
+    BIND("DEFAULT_LICENSE" as ?default_license)
+    BIND("DEFAULT_COLLECTION" as ?default_collection)
+
+    OPTIONAL { ?entity dive:inCollection ?actual_collection }
+    OPTIONAL { ?entity dc:rights ?actual_license}
+
+    BIND(coalesce(?actual_license, ?default_license) as ?license)
+    BIND(coalesce(?actual_collection, ?default_collection) as ?collection)
+
     BIND("Related to" as ?relations)
   }
 }
-GROUP BY ?entity ?type ?relations
+GROUP BY ?entity ?type ?relations ?license ?collection
 ORDER BY ASC(?timestamp)
 LIMIT 50

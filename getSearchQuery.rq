@@ -14,13 +14,25 @@ PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
 PREFIX dcterms: <http://purl.org/dc/terms/>
 PREFIX dc: <http://purl.org/dc/elements/1.1/>
 
-SELECT DISTINCT ?entity ?type (group_concat(concat(str(?pred)," ",str(?obj));separator="; ") as ?metadataarray) (SAMPLE(?asource) AS ?source) (SAMPLE(?aplaceholder) AS ?placeholder) (SAMPLE(?alabel) as ?label) (SAMPLE(?atimestamp) as ?startDate) (SAMPLE(?adbpediaType) AS ?dbpediaType) (SAMPLE(?adescription) AS ?description) (SAMPLE(?relations) as ?relations) WHERE {
+SELECT DISTINCT ?entity ?type ?collection ?license (group_concat(concat(str(?pred)," ",str(?obj));separator="; ") as ?metadataarray) (SAMPLE(?asource) AS ?source) (SAMPLE(?aplaceholder) AS ?placeholder) (SAMPLE(?alabel) as ?label) (SAMPLE(?atimestamp) as ?startDate) (SAMPLE(?adbpediaType) AS ?dbpediaType) (SAMPLE(?adescription) AS ?description) (SAMPLE(?relations) as ?relations)
+# SELECT DISTINCT ?entity ?type ?collection ?license
+WHERE {
     {
-        SELECT DISTINCT ?entity ?type
+        SELECT DISTINCT ?entity ?type ?collection ?license
         WHERE {
           BIND(concat(?_keywordsList, "/i") as ?keyword)
+          BIND("DEFAULT_LICENSE" as ?default_license)
+          BIND("DEFAULT_COLLECTION" as ?default_collection)
+
           ?entity tpf:match (?labelpred ?keyword ?alabel1).
           ?entity rdf:type ?type.
+
+          OPTIONAL { ?entity dive:inCollection ?actual_collection }
+      	  OPTIONAL { ?entity dc:rights ?actual_license}
+
+          BIND(coalesce(?actual_license, ?default_license) as ?license)
+          BIND(coalesce(?actual_collection, ?default_collection) as ?collection)
+
           FILTER(?type=sem:Actor || ?type = sem:Place || ?type = sem:Event || ?type=dive:MediaObject)
         }
         LIMIT 1000
@@ -39,6 +51,5 @@ SELECT DISTINCT ?entity ?type (group_concat(concat(str(?pred)," ",str(?obj));sep
                ?adepict dcterms:description ?adescription.
              }
     BIND("Matches query," as ?relations)
-
 }
-GROUP BY ?entity ?type
+GROUP BY ?entity ?type ?collection ?license
