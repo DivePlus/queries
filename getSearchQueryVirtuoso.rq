@@ -1,0 +1,50 @@
+#+ summary: Creates search query from keywordlist, offset and limit
+#+ endpoint: http://data.dive.beeldengeluid.nl/sparql/
+#+ idField: entity
+#+ pagination: 50
+#+ tags:
+#+      - Dive-UI
+
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX dive: <http://purl.org/collections/nl/dive/>
+PREFIX sem: <http://semanticweb.cs.vu.nl/2009/11/sem/>
+PREFIX tpf: <http://cliopatria.swi-prolog.org/pf/text#>
+PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
+PREFIX dcterms: <http://purl.org/dc/terms/>
+PREFIX dc: <http://purl.org/dc/elements/1.1/>
+PREFIX bif: <bif:>
+
+
+SELECT DISTINCT ?entity ?type (group_concat(concat(str(?pred)," ",str(?obj));separator="; ") as ?metadataarray) (SAMPLE(?asource) AS ?source) (SAMPLE(?aplaceholder) AS ?placeholder) (SAMPLE(?alabel) as ?label) (SAMPLE(?atimestamp) as ?startDate) (SAMPLE(?adbpediaType) AS ?dbpediaType) (SAMPLE(?adescription) AS ?description) (SAMPLE(?relations) as ?relations)
+
+WHERE {
+    {
+        SELECT DISTINCT ?entity ?type
+        WHERE {
+          ?entity rdf:type ?type.
+          ?entity ?aLabelPred  ?aLabelObj.
+          ?aLabelObj bif:contains ?_keywordsList .
+          FILTER(?type=sem:Actor || ?type = sem:Place || ?type = sem:Event || ?type=dive:MediaObject)
+        }
+        LIMIT 1000
+    } .
+    ?entity ?pred ?obj.
+
+    OPTIONAL { ?entity rdfs:label ?alabel}.
+    OPTIONAL { ?entity dc:description ?adescription}
+    OPTIONAL { ?entity dive:source ?asource. ?entity dive:placeholder ?aplaceholder.}
+    OPTIONAL { ?entity dive:hasTimeStamp ?atimestamp }
+    OPTIONAL { ?entity dive:dbpediaType ?adbpediaType }
+
+#    OPTIONAL { ?entity dive:depictedBy ?adepict.
+#               ?adepict dive:source ?asource.
+#               ?adepict dive:placeholder ?aplaceholder.
+#               ?adepict dcterms:description ?adescription.
+#             }
+
+    BIND("Matches query," as ?relations)
+
+}
+GROUP BY ?entity ?type
+LIMIT 1000
