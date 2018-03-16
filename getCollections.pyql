@@ -1,0 +1,10 @@
+from pythonql.Executor import *
+
+data = dataIn['results']['bindings']
+result = { "items": [
+                  select {uri: label}
+                  for item in data
+                  let uri = item['uri']['value']
+                  let label = item['label']['value']
+]}
+dataOut = result
