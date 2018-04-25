@@ -1,0 +1,51 @@
+#+ summary: Returns DIVE entities related to entity with entityId id
+#+ endpoint: http://data.dive.beeldengeluid.nl/sparql/
+#+ idField: entity
+#+ pagination: 50
+#+ tags:
+#+      - Dive-UI
+
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX sem: <http://semanticweb.cs.vu.nl/2009/11/sem/>
+PREFIX dive: <http://purl.org/collections/nl/dive/>
+PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
+PREFIX owl: <http://www.w3.org/2002/07/owl#>
+PREFIX dcterms: <http://purl.org/dc/terms/>
+
+SELECT DISTINCT ?entity ?type (SAMPLE(?asource) AS ?source) (SAMPLE(?aplaceholder) AS ?placeholder) (SAMPLE(?alabel) as ?label) (SAMPLE(?atimestamp) as ?startDate) (SAMPLE(?adbpediatype) AS ?dbpediaType) (SAMPLE(?adescription) AS ?description) ?relations
+WHERE
+{
+  {
+    {
+      SELECT DISTINCT ?entity WHERE {
+        { ?_id_iri owl:sameAs ?same.
+          ?same dive:isRelatedTo ?entity.
+        } UNION {  ?_id_iri skos:exactMatch ?match.
+          ?same skos:exactMatch ?match.
+          ?same dive:isRelatedTo ?entity.
+        } UNION {
+          ?_id_iri dive:isRelatedTo ?entity.
+        }
+      } GROUP BY ?entity
+    }
+    FILTER(?entity != ?_id_iri)
+    ?entity rdf:type ?type.
+    FILTER(?type=sem:Actor || ?type = sem:Place || ?type = sem:Event || ?type = skos:Concept || ?type=dive:MediaObject)
+    OPTIONAL { ?entity rdfs:label ?alabel. }
+    OPTIONAL { ?entity dive:depictedBy ?adepict.
+               ?adepict dive:source ?asource.
+               ?adepict dive:placeholder ?aplaceholder.
+               ?adepict dcterms:description ?adescription.
+             }
+    OPTIONAL { ?entity dive:source ?asource.
+               ?entity dive:placeholder ?aplaceholder.
+            }
+    OPTIONAL { ?entity dive:hasTimeStamp ?atimestamp }
+    OPTIONAL { ?entity dive:dbpediaType ?adbpediatype }
+    BIND("Related to" as ?relations)
+  }
+}
+GROUP BY ?entity ?type ?relations
+ORDER BY ASC(?startDate)
+LIMIT 50
