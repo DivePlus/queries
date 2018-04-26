@@ -19,7 +19,7 @@ WHERE
   {
     {
       SELECT DISTINCT ?entity WHERE {
-        { ?_id_iri owl:sameAs ?same.
+        { ?_id_iri owl:sameAs* ?same.
           ?same dive:isRelatedTo ?entity.
         } UNION {  ?_id_iri skos:exactMatch ?match.
           ?same skos:exactMatch ?match.
