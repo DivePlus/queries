@@ -1,0 +1,31 @@
+from pythonql.Executor import *
+
+def getValue(item, key):
+  try:
+    return item[key]['value']
+  except:
+    return None
+
+data = dataIn['results']['bindings']
+result = { "data": [
+                  select {
+                    'relations': relations,
+                    'entity'   : entity
+
+                  }
+                  for item in data
+                  let relations = try item['relations']['value'].strip(',').split(',') except ''
+                  let entity = {
+                    'type'       : getValue(item, 'type'),
+                    'id'         : getValue(item, 'entity'),
+                    'title'      : getValue(item, 'label'),
+                    'thumbnail'  : getValue(item, 'placeholder'),
+                    'source'     : getValue(item, 'source'),
+                    'media'      : getValue(item, 'source'),
+                    'dateStart'  : getValue(item, 'startDate'),
+                    'description': getValue(item, 'description'),
+                    'metadataarray': try getValue(item,'metadataarray').split(';') except ':-()'
+                  }
+                  let metadata = 'define metadata...'
+]}
+dataOut = result

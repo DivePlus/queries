@@ -1,0 +1,13 @@
+from pythonql.Executor import *
+
+def getValue(item, key):
+  try:
+    return item[key]['value']
+  except:
+    return None
+
+data = dataIn['results']['bindings']
+result = { "data": [
+                  getValue(item, 'suggestion') for item in data
+]}
+dataOut = result
