@@ -23,7 +23,7 @@ result = { "data": [
                     'media'      : getValue(item, 'source'),
                     'dateStart'  : '',
                     'description': getValue(item, 'description'),
-                    'metadataarray': try getValue(item,'metadataarray').split(';') except ':-()'
+                    'metadataarray': try getValue(item,'metadataarray').split(';') except []
                   }
 ]}
 dataOut = result
